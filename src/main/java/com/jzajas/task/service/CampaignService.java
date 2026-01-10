@@ -2,13 +2,12 @@ package com.jzajas.task.service;
 
 import com.jzajas.task.dto.CampaignCreationDTO;
 import com.jzajas.task.dto.CampaignReturnDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface CampaignService {
     CampaignReturnDTO createCampaign(CampaignCreationDTO dto);
     CampaignReturnDTO getCampaignById(Long id);
-    List<CampaignReturnDTO> getAllCampaigns();
+    Page<CampaignReturnDTO> getAllCampaigns(int page, int size, String sort);
     CampaignReturnDTO updateCampaignById(Long id, CampaignCreationDTO dto);
-    String deleteCampaignById(Long campaignId, Long userId);
+    String deleteCampaignById(Long campaignId);
 }

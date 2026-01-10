@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
         user.setCampaigns(new ArrayList<>());
 
         User saved = userRepository.save(user);
+
         return userMapper.createDtoFromObject(saved);
     }
 

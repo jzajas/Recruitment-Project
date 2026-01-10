@@ -21,7 +21,6 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "campaigns", ignore = true)
-    @Mapping(target = "balance", ignore = true)
     User updateObjectFromDto (
             UserUpdateDTO dto,
             @MappingTarget User object

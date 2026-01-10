@@ -8,11 +8,13 @@ import com.jzajas.task.repository.CampaignRepository;
 import com.jzajas.task.repository.UserRepository;
 import com.jzajas.task.util.CampaignMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -58,11 +60,11 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public List<CampaignReturnDTO> getAllCampaigns() {
-        return campaignRepository.findAll().stream()
-                .filter(Campaign::getStatus)
-                .map(object -> campaignMapper.fromObjectToDto(object))
-                .toList();
+    public Page<CampaignReturnDTO> getAllCampaigns(int page, int size, String sort) {
+        return campaignRepository.findByStatusTrue(PageRequest.of(
+                        page, size, Sort.by(Sort.Direction.DESC, sort)
+                ))
+                .map(campaignMapper::fromObjectToDto);
     }
 
     @Override
@@ -88,13 +90,13 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     @Transactional
-    public String deleteCampaignById(Long campaignId, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MESSAGE));
+    public String deleteCampaignById(Long campaignId) {
         Campaign campaign = campaignRepository.findById(campaignId)
                 .orElseThrow(() -> new RuntimeException(CAMPAIGN_NOT_FOUND_MESSAGE));
+        User user = userRepository.findById(campaign.getOwner().getId())
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MESSAGE));
 
-        if (!Objects.equals(user.getId(), campaign.getOwner().getId())) throw new IllegalArgumentException(USER_OR_CAMPAIGN_ID_INCORRECT_MESSAGE);
+        user.setBalance(user.getBalance().add(campaign.getFund()));
 
         campaignRepository.deleteById(campaignId);
 
