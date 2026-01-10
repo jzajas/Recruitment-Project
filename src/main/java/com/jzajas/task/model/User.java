@@ -8,17 +8,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 
-@Data
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -30,6 +30,9 @@ public class User {
 
     @Column(name = "surname", nullable = false)
     private String surname;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "emeraldBalance", nullable = false, scale = 2)
     private BigDecimal balance;
