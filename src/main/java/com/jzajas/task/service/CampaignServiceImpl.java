@@ -19,8 +19,6 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class CampaignServiceImpl implements CampaignService {
-    private static final String  SUCCESSFUL_CREATION_MESSAGE = "Campaign created successfully";
-    private static final String SUCCESSFUL_UPDATE_MESSAGE = "Campaign updated successfully";
     private static final String SUCCESSFUL_DELETION_MESSAGE = "Campaign deleted successfully";
     private static final String USER_NOT_FOUND_MESSAGE = "Provided user does not exists";
     private static final String CAMPAIGN_NOT_FOUND_MESSAGE = "Provided campaign does not exists or has already ended";
@@ -34,7 +32,7 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     @Transactional
-    public String createCampaign(CampaignCreationDTO dto) {
+    public CampaignReturnDTO createCampaign(CampaignCreationDTO dto) {
         User user = userRepository.findById(dto.getOwnerId())
                 .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MESSAGE));
 
@@ -46,9 +44,8 @@ public class CampaignServiceImpl implements CampaignService {
         Campaign campaign = campaignMapper.fromDtoToObject(dto);
         campaign.setOwner(user);
 
-        campaignRepository.save(campaign);
-
-        return SUCCESSFUL_CREATION_MESSAGE;
+        Campaign saved = campaignRepository.save(campaign);
+        return campaignMapper.fromObjectToDto(saved);
     }
 
     @Override
@@ -70,7 +67,7 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     @Transactional
-    public String updateCampaignById(Long campaignId, CampaignCreationDTO dto) {
+    public CampaignReturnDTO updateCampaignById(Long campaignId, CampaignCreationDTO dto) {
         Campaign campaign = campaignRepository.findById(campaignId)
                 .orElseThrow(() -> new RuntimeException(CAMPAIGN_NOT_FOUND_MESSAGE));
 
@@ -83,10 +80,10 @@ public class CampaignServiceImpl implements CampaignService {
 
         handleFundsForUser(campaign.getFund(), dto.getFund(), user);
 
-       Campaign updatedCampaign = campaignMapper.updateCampaignFromDto(dto, campaign);
+       Campaign updatedCampaign = campaignMapper.updateObjectFromDto(dto, campaign);
 
-        campaignRepository.save(updatedCampaign);
-        return SUCCESSFUL_UPDATE_MESSAGE;
+        Campaign saved = campaignRepository.save(updatedCampaign);
+        return campaignMapper.fromObjectToDto(saved);
     }
 
     @Override

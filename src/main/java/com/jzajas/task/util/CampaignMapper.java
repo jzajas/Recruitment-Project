@@ -21,10 +21,9 @@ public interface CampaignMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "owner", ignore = true)
-//    @Mapping(target = "fund", ignore = true)
-    Campaign updateCampaignFromDto(
+
+    Campaign updateObjectFromDto(
             CampaignCreationDTO dto,
             @MappingTarget Campaign campaign
     );
-
 }
