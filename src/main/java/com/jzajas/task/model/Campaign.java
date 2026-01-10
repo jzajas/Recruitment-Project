@@ -10,16 +10,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 
-@Data
 @Entity
 @Table(name = "campaigns")
-@NoArgsConstructor
+@Getter
+@Setter
 public class Campaign {
 
     @Id
@@ -37,10 +39,10 @@ public class Campaign {
     @Column(name = "keywords", nullable = false)
     private List<String> keywords;
 
-    @Column(name = "bid", nullable = false)
+    @Column(name = "bid", nullable = false, scale = 2)
     private BigDecimal bidAmount;
 
-    @Column(name = "fund", nullable = false)
+    @Column(name = "fund", nullable = false, scale = 2)
     private BigDecimal fund;
 
     @Column(name = "status", nullable = false)

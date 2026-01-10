@@ -5,10 +5,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+
+@Getter
 public class CampaignCreationDTO {
 
     @NotNull(message = "Owner of the campaign must be specified")
@@ -21,11 +24,11 @@ public class CampaignCreationDTO {
     private List<String> keywords;
 
     @NotNull(message = "Bid amount must be specified")
-    @DecimalMin(value = "100.00", message = "Bid amount must be at least 100")
+    @DecimalMin(value = "5.00", message = "Bid amount must be at least 100")
     private BigDecimal bidAmount;
 
     @NotNull(message = "Campaign fund must be specified")
-    @DecimalMin(value = "500.00", message = "Campaign fund must be at least 500")
+    @DecimalMin(value = "10.00", message = "Campaign fund must be at least 500")
     private BigDecimal fund;
 
     @NotNull(message = "Status  must be specified")

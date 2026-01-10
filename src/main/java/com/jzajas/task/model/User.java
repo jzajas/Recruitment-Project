@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -27,11 +28,11 @@ public class User {
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
-    @Column(name = "lastname", nullable = false)
-    private String lastname;
+    @Column(name = "surname", nullable = false)
+    private String surname;
 
-    @Column(name = "emeraldBalance", nullable = false)
-    private Double balance;
+    @Column(name = "emeraldBalance", nullable = false, scale = 2)
+    private BigDecimal balance;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Campaign> campaigns;
