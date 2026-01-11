@@ -2,6 +2,7 @@ package com.jzajas.task.controller;
 
 import com.jzajas.task.dto.CampaignCreationDTO;
 import com.jzajas.task.dto.CampaignReturnDTO;
+import com.jzajas.task.dto.CampaignUpdateDTO;
 import com.jzajas.task.service.CampaignService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -54,7 +55,7 @@ public class CampaignController {
     @PutMapping("/{id}")
     public ResponseEntity<CampaignReturnDTO> updateCampaign(
             @PathVariable Long id,
-            @Valid @RequestBody CampaignCreationDTO dto
+            @Valid @RequestBody CampaignUpdateDTO dto
     ) {
         CampaignReturnDTO updated = campaignService.updateCampaignById(id, dto);
         return new ResponseEntity<>(updated, HttpStatus.CREATED);

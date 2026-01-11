@@ -2,6 +2,7 @@ package com.jzajas.task.util;
 
 import com.jzajas.task.dto.CampaignCreationDTO;
 import com.jzajas.task.dto.CampaignReturnDTO;
+import com.jzajas.task.dto.CampaignUpdateDTO;
 import com.jzajas.task.model.Campaign;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,7 +24,7 @@ public interface CampaignMapper {
     @Mapping(target = "owner", ignore = true)
 
     Campaign updateObjectFromDto(
-            CampaignCreationDTO dto,
+            CampaignUpdateDTO dto,
             @MappingTarget Campaign campaign
     );
 }

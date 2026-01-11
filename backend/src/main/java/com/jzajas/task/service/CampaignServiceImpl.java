@@ -2,6 +2,7 @@ package com.jzajas.task.service;
 
 import com.jzajas.task.dto.CampaignCreationDTO;
 import com.jzajas.task.dto.CampaignReturnDTO;
+import com.jzajas.task.dto.CampaignUpdateDTO;
 import com.jzajas.task.exception.CampaignInactiveException;
 import com.jzajas.task.exception.CampaignNotFoundException;
 import com.jzajas.task.exception.InsufficientBalanceException;
@@ -29,7 +30,6 @@ public class CampaignServiceImpl implements CampaignService {
     private static final String USER_NOT_FOUND_MESSAGE = "Provided user does not exists";
     private static final String CAMPAIGN_NOT_FOUND_MESSAGE = "Provided campaign does not exists or has already ended";
     private static final String INSUFFICIENT_USER_BALANCE_MESSAGE = "Insufficient user balance";
-    private static final String USER_OR_CAMPAIGN_ID_INCORRECT_MESSAGE = "Either specified user or campaign are incorrect";
 
     private final CampaignRepository campaignRepository;
     private final UserRepository userRepository;
@@ -58,7 +58,6 @@ public class CampaignServiceImpl implements CampaignService {
     public CampaignReturnDTO getCampaignById(Long id) {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new CampaignNotFoundException(CAMPAIGN_NOT_FOUND_MESSAGE));
-        if (!campaign.getStatus()) throw new CampaignInactiveException(CAMPAIGN_NOT_FOUND_MESSAGE);
 
         return campaignMapper.fromObjectToDto(campaign);
     }
@@ -73,16 +72,13 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     @Transactional
-    public CampaignReturnDTO updateCampaignById(Long campaignId, CampaignCreationDTO dto) {
+    public CampaignReturnDTO updateCampaignById(Long campaignId, CampaignUpdateDTO dto) {
         Campaign campaign = campaignRepository.findById(campaignId)
                 .orElseThrow(() -> new CampaignNotFoundException(CAMPAIGN_NOT_FOUND_MESSAGE));
 
-        Long ownerId = dto.getOwnerId();
-        User user = userRepository.findById(ownerId)
+
+        User user = userRepository.findById(campaign.getOwner().getId())
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
-
-
-        if (!Objects.equals(ownerId, campaign.getOwner().getId())) throw new IllegalArgumentException(USER_OR_CAMPAIGN_ID_INCORRECT_MESSAGE);
 
         handleFundsForUser(campaign.getFund(), dto.getFund(), user);
 
