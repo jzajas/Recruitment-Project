@@ -5,14 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @Slf4j
 @RestControllerAdvice
-public class ControllerAdvice {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientBalanceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseDTO> handleInsufficientBalanceException(InsufficientBalanceException ex) {
         log.error("Insufficient balance: {}", ex.getMessage());
 
@@ -25,6 +27,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(CampaignNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponseDTO> handleCampaignNotFoundException(CampaignNotFoundException ex) {
         log.error("Campaign not found: {}", ex.getMessage());
 
@@ -37,6 +40,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(CampaignInactiveException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseDTO> handleCampaignInactiveException(CampaignInactiveException ex) {
         log.error("Campaign inactive: {}", ex.getMessage());
 
@@ -49,6 +53,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponseDTO> handleUserNotFoundException(UserNotFoundException ex) {
         log.error("User not found: {}", ex.getMessage());
 
@@ -61,6 +66,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(UnauthorizedCampaignAccessException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<ErrorResponseDTO> handleUnauthorizedCampaignAccessException(UnauthorizedCampaignAccessException ex) {
         log.error("Unauthorized campaign access: {}", ex.getMessage());
 
