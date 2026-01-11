@@ -5,6 +5,7 @@ import { CreateUser } from "./pages/CreateUser";
 import { GetUser } from "./pages/GetUser.jsx";
 import { CreateCampaign } from "./pages/CreateCampaign";
 import { CampaignList } from "./pages/CampaignList";
+import { GetCampaign } from "./pages/GetCampaign.jsx";
 
 
 function App() {
@@ -16,8 +17,9 @@ function App() {
         <Route path="/" element={<h2>Home</h2>} />
         <Route path="/users/create" element={<CreateUser />} />
         <Route path="/users/get" element={<GetUser />} />
-        <Route path="/campaigns/create" element={<CreateCampaign />} />
         <Route path="/campaigns" element={<CampaignList />} />
+        <Route path="/campaigns/create" element={<CreateCampaign />} />
+        <Route path="/campaigns/get" element={<GetCampaign />} />
       </Routes>
     </BrowserRouter>
   );

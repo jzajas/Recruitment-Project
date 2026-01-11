@@ -9,7 +9,6 @@ export function CampaignList() {
   const [totalPages, setTotalPages] = useState(0);
   const [error, setError] = useState("");
 
-  // Fetch campaigns
   const fetchCampaigns = async () => {
     setError("");
     try {
@@ -20,7 +19,7 @@ export function CampaignList() {
         }
       );
       const pageData = response.data;
-      setCampaigns(pageData.content); // Page<CampaignReturnDTO> has content array
+      setCampaigns(pageData.content);
       setTotalPages(pageData.totalPages);
     } catch (err) {
       setError("Error fetching campaigns");
