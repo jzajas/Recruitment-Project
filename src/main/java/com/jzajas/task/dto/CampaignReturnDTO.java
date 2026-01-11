@@ -11,6 +11,8 @@ import java.util.List;
 @Getter
 public class CampaignReturnDTO {
 
+    private Long id;
+
     private String name;
 
     private String ownerName;

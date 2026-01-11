@@ -2,6 +2,10 @@ package com.jzajas.task.service;
 
 import com.jzajas.task.dto.CampaignCreationDTO;
 import com.jzajas.task.dto.CampaignReturnDTO;
+import com.jzajas.task.exception.CampaignInactiveException;
+import com.jzajas.task.exception.CampaignNotFoundException;
+import com.jzajas.task.exception.InsufficientBalanceException;
+import com.jzajas.task.exception.UserNotFoundException;
 import com.jzajas.task.model.Campaign;
 import com.jzajas.task.model.User;
 import com.jzajas.task.repository.CampaignRepository;
@@ -36,11 +40,11 @@ public class CampaignServiceImpl implements CampaignService {
     @Transactional
     public CampaignReturnDTO createCampaign(CampaignCreationDTO dto) {
         User user = userRepository.findById(dto.getOwnerId())
-                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MESSAGE));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
 
         BigDecimal userBalance = user.getBalance();
         BigDecimal campaignFund = dto.getFund();
-        if (campaignFund.compareTo(userBalance) > 0) throw new RuntimeException(INSUFFICIENT_USER_BALANCE_MESSAGE);
+        if (campaignFund.compareTo(userBalance) > 0) throw new InsufficientBalanceException(INSUFFICIENT_USER_BALANCE_MESSAGE);
         user.setBalance(userBalance.subtract(campaignFund));
 
         Campaign campaign = campaignMapper.fromDtoToObject(dto);
@@ -53,8 +57,8 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public CampaignReturnDTO getCampaignById(Long id) {
         Campaign campaign = campaignRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(CAMPAIGN_NOT_FOUND_MESSAGE));
-        if (!campaign.getStatus()) throw new RuntimeException(CAMPAIGN_NOT_FOUND_MESSAGE);
+                .orElseThrow(() -> new CampaignNotFoundException(CAMPAIGN_NOT_FOUND_MESSAGE));
+        if (!campaign.getStatus()) throw new CampaignInactiveException(CAMPAIGN_NOT_FOUND_MESSAGE);
 
         return campaignMapper.fromObjectToDto(campaign);
     }
@@ -71,11 +75,11 @@ public class CampaignServiceImpl implements CampaignService {
     @Transactional
     public CampaignReturnDTO updateCampaignById(Long campaignId, CampaignCreationDTO dto) {
         Campaign campaign = campaignRepository.findById(campaignId)
-                .orElseThrow(() -> new RuntimeException(CAMPAIGN_NOT_FOUND_MESSAGE));
+                .orElseThrow(() -> new CampaignNotFoundException(CAMPAIGN_NOT_FOUND_MESSAGE));
 
         Long ownerId = dto.getOwnerId();
         User user = userRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MESSAGE));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
 
 
         if (!Objects.equals(ownerId, campaign.getOwner().getId())) throw new IllegalArgumentException(USER_OR_CAMPAIGN_ID_INCORRECT_MESSAGE);
@@ -92,9 +96,9 @@ public class CampaignServiceImpl implements CampaignService {
     @Transactional
     public String deleteCampaignById(Long campaignId) {
         Campaign campaign = campaignRepository.findById(campaignId)
-                .orElseThrow(() -> new RuntimeException(CAMPAIGN_NOT_FOUND_MESSAGE));
+                .orElseThrow(() -> new CampaignNotFoundException(CAMPAIGN_NOT_FOUND_MESSAGE));
         User user = userRepository.findById(campaign.getOwner().getId())
-                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MESSAGE));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
 
         user.setBalance(user.getBalance().add(campaign.getFund()));
 
@@ -112,7 +116,7 @@ public class CampaignServiceImpl implements CampaignService {
             BigDecimal difference = newFund.subtract(oldFund);
 
             if (difference.compareTo(user.getBalance()) > 0) {
-                throw new RuntimeException(INSUFFICIENT_USER_BALANCE_MESSAGE);
+                throw new InsufficientBalanceException(INSUFFICIENT_USER_BALANCE_MESSAGE);
             }
             user.setBalance(userBalance.subtract(difference));
         }

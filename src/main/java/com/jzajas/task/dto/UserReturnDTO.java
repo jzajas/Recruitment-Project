@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 @Getter
 public class UserReturnDTO {
 
+    private Long id;
+
     private String firstname;
 
     private String surname;
