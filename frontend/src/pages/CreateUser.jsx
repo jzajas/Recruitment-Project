@@ -27,6 +27,9 @@ export function CreateUser() {
     setCreatedUser(null);
 
     try {
+      console.log("API URL:", API_URL);
+      console.log("Full request URL:", `${API_URL}/users`);
+      
       const response = await axios.post(
         `${API_URL}/users`,
         {
