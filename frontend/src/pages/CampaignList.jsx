@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_URL } from "../config/api";
+
 
 export function CampaignList() {
   const [campaigns, setCampaigns] = useState([]);
@@ -13,7 +15,7 @@ export function CampaignList() {
     setError("");
     try {
       const response = await axios.get(
-        `http://localhost:8080/campaigns/`,
+        `${API_URL}/campaigns/`,
         {
           params: { page, size, sort },
         }

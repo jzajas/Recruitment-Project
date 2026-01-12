@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/campaigns")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
 public class CampaignController {
 
     private final CampaignService campaignService;

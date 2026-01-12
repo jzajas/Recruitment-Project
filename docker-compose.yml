@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: task-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - task-network
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8080
+    container_name: task-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - task-network
+
+networks:
+  task-network:
+    driver: bridge

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../config/api";
+
 
 export function GetCampaign() {
   const [campaignId, setCampaignId] = useState("");
@@ -15,7 +17,7 @@ export function GetCampaign() {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/campaigns/${campaignId}`
+        `${API_URL}/campaigns/${campaignId}`
       );
       setCampaign(response.data);
     } catch (err) {
@@ -50,7 +52,7 @@ export function GetCampaign() {
       };
 
       const response = await axios.put(
-        `http://localhost:8080/campaigns/${campaign.id}`,
+        `${API_URL}/campaigns/${campaign.id}`,
         payload
       );
 
@@ -70,7 +72,7 @@ export function GetCampaign() {
 
     try {
       await axios.delete(
-        `http://localhost:8080/campaigns/${campaign.id}`
+        `${API_URL}/campaigns/${campaign.id}`
       );
       setCampaign(null);
       setCampaignId("");

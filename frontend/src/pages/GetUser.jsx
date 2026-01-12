@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../config/api";
 import axios from "axios";
 
 export function GetUser() {
@@ -13,7 +14,6 @@ export function GetUser() {
     balance: "",
   });
 
-  // Fetch user by ID
   const getUser = async () => {
     setError("");
     setSuccess("");
@@ -22,7 +22,7 @@ export function GetUser() {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/users/${userId}`
+        `${API_URL}/users/${userId}`
       );
       setUser(response.data);
     } catch (err) {
@@ -30,10 +30,9 @@ export function GetUser() {
     }
   };
 
-  // Delete user
   const deleteUser = async () => {
     try {
-      await axios.delete(`http://localhost:8080/users/${userId}`);
+      await axios.delete(`${API_URL}/users/${userId}`);
       setUser(null);
       setSuccess("User deleted");
     } catch {
@@ -41,7 +40,6 @@ export function GetUser() {
     }
   };
 
-  // Start editing
   const startEditing = () => {
     setEditForm({
       firstname: user.firstname,
@@ -53,7 +51,6 @@ export function GetUser() {
     setSuccess("");
   };
 
-  // Handle input change
   const handleEditChange = (e) => {
     setEditForm({
       ...editForm,
@@ -61,12 +58,11 @@ export function GetUser() {
     });
   };
 
-  // Save edited user
   const saveEdit = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/users/${userId}`,
-        editForm // matches UserUpdateDTO
+        `${API_URL}/users/${userId}`,
+        editForm
       );
       setUser(response.data);
       setEditing(false);

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../config/api";
+
 
 export function CreateCampaign() {
   const [form, setForm] = useState({
@@ -52,15 +54,14 @@ export function CreateCampaign() {
       };
 
       const response = await axios.post(
-        "http://localhost:8080/campaigns",
+        `${API_URL}/campaigns`,
         payload
       );
 
-      const campaign = response.data; // should match CampaignReturnDTO
+      const campaign = response.data;
       setCreatedCampaign(campaign);
       setSuccess(`Campaign "${campaign.name}" created successfully!`);
 
-      // Reset form
       setForm({
         ownerId: "",
         name: "",

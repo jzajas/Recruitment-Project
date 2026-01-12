@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../config/api";
+
 
 export function CreateUser() {
   const [form, setForm] = useState({
@@ -26,12 +28,12 @@ export function CreateUser() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/users",
+        `${API_URL}/users`,
         {
           firstname: form.firstname,
           surname: form.surname,
           email: form.email,
-          balance: form.balance, // BigDecimal as string
+          balance: form.balance,
         }
       );
 
