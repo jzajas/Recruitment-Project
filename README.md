@@ -66,6 +66,20 @@ The application can also be run locally after cloning the repository. Using Dock
 
 This approach is intended for development, debugging, and exploring the codebase in a local environment.
 
+#### How to install
+Copy Repository
+ ```
+git clone https://github.com/jzajas/Recruitment-Project.git
+```
+Change directory
+ ```
+cd Recruitment-Project
+```
+Run Docker
+ ```
+docker compose up --build
+```
+
 ---
 
 ## 📈 Areas for Improvement
