@@ -46,7 +46,7 @@ This project is a full-stack web application that allows users to create and man
 * JavaScript
 * Vite
 * CSS
-* Axios / Fetch API
+* Axios
 
 ---
 
