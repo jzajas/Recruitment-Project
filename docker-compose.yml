@@ -9,6 +9,7 @@ services:
       - task-network
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      FRONTEND_URL: "http://localhost:5173"
 
   frontend:
     build:
